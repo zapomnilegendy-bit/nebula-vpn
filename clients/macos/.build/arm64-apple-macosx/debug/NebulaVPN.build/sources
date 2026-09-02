@@ -1,0 +1,14 @@
+/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/App.swift
+/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/ContentView.swift
+/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Models/VPNState.swift
+/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Services/AutoUpdater.swift
+/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Services/CrashReporter.swift
+/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Services/KeychainManager.swift
+/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Services/QRCodeService.swift
+/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Services/VPNService.swift
+/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/ViewModels/MainViewModel.swift
+/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Views/AboutView.swift
+/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Views/ConnectionRingView.swift
+/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Views/OnboardingView.swift
+/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Views/ServerPickerView.swift
+/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Views/SettingsView.swift

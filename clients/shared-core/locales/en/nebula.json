@@ -1,0 +1,83 @@
+{
+  "app": {
+    "name": "NebulaVPN",
+    "tagline": "Secure, private, unrestricted internet access.",
+    "version": "1.0.0"
+  },
+  "connection": {
+    "connected": "Connected",
+    "disconnected": "Not Connected",
+    "connecting": "Connecting…",
+    "reconnecting": "Reconnecting…",
+    "error": "Connection Error",
+    "duration": "Duration",
+    "data": "Data Usage"
+  },
+  "server": {
+    "select": "Select a server",
+    "fastest": "Fastest Server",
+    "auto_selected": "Automatically selected",
+    "all_locations": "All Locations",
+    "search": "Search locations",
+    "load": "{percent}% load",
+    "latency": "{latency}ms",
+    "premium": "PREMIUM"
+  },
+  "auth": {
+    "unlock": "Unlock",
+    "authenticate": "Authenticate to access your secure connection",
+    "login": "Sign In",
+    "register": "Create Account",
+    "email": "Email",
+    "password": "Password"
+  },
+  "settings": {
+    "title": "Settings",
+    "kill_switch": "Kill Switch",
+    "split_tunnel": "Split Tunneling",
+    "auto_protocol": "Auto-protocol",
+    "dns": "DNS Configuration",
+    "dns_doh": "DNS over HTTPS",
+    "dns_dot": "DNS over TLS",
+    "dns_leak": "Prevent DNS leaks",
+    "account": "Account",
+    "plan": "Plan",
+    "data_used": "Data Used",
+    "about": "About",
+    "version": "Version"
+  },
+  "subscription": {
+    "title": "Subscription",
+    "current_plan": "Current Plan",
+    "active": "Your subscription is active",
+    "choose_plan": "Choose your plan",
+    "per_month": "per month",
+    "per_year": "per year",
+    "subscribe": "Continue with {plan}",
+    "cancel_anytime": "Cancel anytime. Auto-renews unless cancelled.",
+    "popular": "POPULAR",
+    "free": "Free",
+    "pro": "Pro",
+    "ultimate": "Ultimate"
+  },
+  "onboarding": {
+    "page1_title": "Privacy First",
+    "page1_desc": "NebulaVPN encrypts all your traffic with military-grade WireGuard protocol. No logs, no tracking.",
+    "page2_title": "Global Network",
+    "page2_desc": "Access content from 50+ locations worldwide. Your real IP stays hidden everywhere you go.",
+    "page3_title": "Anti-DPI Technology",
+    "page3_desc": "Advanced obfuscation bypasses deep packet inspection. Works in the most restrictive networks.",
+    "page4_title": "One-Click Connect",
+    "page4_desc": "Import config via QR code or select from our optimized server list. Connect in one click.",
+    "skip": "Skip",
+    "continue": "Continue",
+    "get_started": "Get Started"
+  },
+  "error": {
+    "general": "Something went wrong",
+    "network": "Network error. Please check your connection.",
+    "auth": "Authentication failed. Please sign in again.",
+    "server_full": "This server is at full capacity. Try another location.",
+    "upgrade": "Upgrade your plan to access this server."
+  }
+}

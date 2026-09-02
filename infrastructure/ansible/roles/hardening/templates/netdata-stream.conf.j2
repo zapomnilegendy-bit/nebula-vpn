@@ -1,0 +1,4 @@
+[stream]
+    enabled = yes
+    destination = {{ netdata_mothership | default('monitoring.nebula-vpn.io:19999') }}
+    api key = {{ netdata_api_key | default('00000000-0000-0000-0000-000000000000') }}

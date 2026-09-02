@@ -1,0 +1,17 @@
+replicaCount: 1
+image:
+  repository: ghcr.io/nebula-vpn/backend/node-manager
+  tag: latest
+service:
+  port: 9090
+resources:
+  limits: { cpu: 500m, memory: 512Mi }
+  requests: { cpu: 200m, memory: 256Mi }
+env:
+  NEBULA_ENV: production
+  NEBULA_DB_HOST: nebula-postgresql.default.svc.cluster.local
+  NEBULA_DB_PORT: "5432"
+  NEBULA_DB_NAME: nebula
+  NEBULA_DB_USER: nebula
+  NEBULA_REDIS_ADDR: nebula-redis-master.default.svc.cluster.local:6379
+  NEBULA_API_URL: http://nebula-api-gateway.default.svc.cluster.local:8080

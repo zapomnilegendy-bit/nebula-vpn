@@ -1,0 +1,83 @@
+{
+  "app": {
+    "name": "NebulaVPN",
+    "tagline": "安全、私密、无限制的网络访问。",
+    "version": "1.0.0"
+  },
+  "connection": {
+    "connected": "已连接",
+    "disconnected": "未连接",
+    "connecting": "连接中…",
+    "reconnecting": "重新连接…",
+    "error": "连接错误",
+    "duration": "持续时间",
+    "data": "数据使用"
+  },
+  "server": {
+    "select": "选择服务器",
+    "fastest": "最快服务器",
+    "auto_selected": "自动选择",
+    "all_locations": "所有位置",
+    "search": "搜索位置",
+    "load": "负载 {percent}%",
+    "latency": "{latency} 毫秒",
+    "premium": "高级"
+  },
+  "auth": {
+    "unlock": "解锁",
+    "authenticate": "请验证身份以访问安全连接",
+    "login": "登录",
+    "register": "创建账户",
+    "email": "邮箱",
+    "password": "密码"
+  },
+  "settings": {
+    "title": "设置",
+    "kill_switch": "网络中断开关",
+    "split_tunnel": "分流隧道",
+    "auto_protocol": "自动协议",
+    "dns": "DNS 配置",
+    "dns_doh": "DNS over HTTPS",
+    "dns_dot": "DNS over TLS",
+    "dns_leak": "防止 DNS 泄露",
+    "account": "账户",
+    "plan": "套餐",
+    "data_used": "已用流量",
+    "about": "关于",
+    "version": "版本"
+  },
+  "subscription": {
+    "title": "订阅",
+    "current_plan": "当前套餐",
+    "active": "订阅已激活",
+    "choose_plan": "选择套餐",
+    "per_month": "每月",
+    "per_year": "每年",
+    "subscribe": "继续使用 {plan}",
+    "cancel_anytime": "可随时取消。自动续费。",
+    "popular": "热门",
+    "free": "免费版",
+    "pro": "专业版",
+    "ultimate": "终极版"
+  },
+  "onboarding": {
+    "page1_title": "隐私优先",
+    "page1_desc": "NebulaVPN 使用军用级 WireGuard 协议加密您的所有流量。无日志，无追踪。",
+    "page2_title": "全球网络",
+    "page2_desc": "访问全球 50+ 个地点的内容。您的真实 IP 始终隐藏。",
+    "page3_title": "反 DPI 技术",
+    "page3_desc": "高级混淆技术绕过深度包检测。在最严格的网络中也能工作。",
+    "page4_title": "一键连接",
+    "page4_desc": "通过二维码导入配置或从优化的服务器列表中选择。一键连接。",
+    "skip": "跳过",
+    "continue": "继续",
+    "get_started": "开始使用"
+  },
+  "error": {
+    "general": "出了点问题",
+    "network": "网络错误。请检查连接。",
+    "auth": "身份验证失败。请重新登录。",
+    "server_full": "此服务器已满。请尝试其他位置。",
+    "upgrade": "升级套餐以访问此服务器。"
+  }
+}

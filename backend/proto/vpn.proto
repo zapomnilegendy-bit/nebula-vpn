@@ -1,0 +1,345 @@
+syntax = "proto3";
+
+package nebula.vpn;
+
+option go_package = "github.com/nebula-vpn/backend/proto;pb";
+
+// ============================================================
+// Auth Service
+// ============================================================
+service AuthService {
+  rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse);
+  rpc CreateUser(CreateUserRequest) returns (UserResponse);
+  rpc GetUserByEmail(GetUserByEmailRequest) returns (UserResponse);
+  rpc GetUserByID(GetUserByIDRequest) returns (UserResponse);
+  rpc UpdatePassword(UpdatePasswordRequest) returns (Empty);
+}
+
+message ValidateTokenRequest {
+  string token = 1;
+  string token_type = 2; // "access" or "refresh"
+}
+
+message ValidateTokenResponse {
+  string user_id = 1;
+  string email = 2;
+  bool valid = 3;
+}
+
+message CreateUserRequest {
+  string email = 1;
+  string password_hash = 2;
+}
+
+message UserResponse {
+  string id = 1;
+  string email = 2;
+  bool is_active = 3;
+  string created_at = 4;
+}
+
+message GetUserByEmailRequest {
+  string email = 1;
+}
+
+message GetUserByIDRequest {
+  string id = 1;
+}
+
+message UpdatePasswordRequest {
+  string user_id = 1;
+  string new_password_hash = 2;
+}
+
+// ============================================================
+// Device Service
+// ============================================================
+service DeviceService {
+  rpc RegisterDevice(RegisterDeviceRequest) returns (DeviceResponse);
+  rpc GetDevice(GetDeviceRequest) returns (DeviceResponse);
+  rpc ListDevices(ListDevicesRequest) returns (ListDevicesResponse);
+  rpc UpdateDevice(UpdateDeviceRequest) returns (DeviceResponse);
+  rpc DeleteDevice(DeleteDeviceRequest) returns (Empty);
+  rpc GetDeviceConfig(GetDeviceConfigRequest) returns (DeviceConfigResponse);
+}
+
+message RegisterDeviceRequest {
+  string user_id = 1;
+  string name = 2;
+  string platform = 3;
+  string public_key = 4;
+  string private_key_encrypted = 5;
+  string ip_address = 6;
+}
+
+message DeviceResponse {
+  string id = 1;
+  string user_id = 2;
+  string name = 3;
+  string platform = 4;
+  string public_key = 5;
+  string ip_address = 6;
+  bool is_active = 7;
+  string last_connected_at = 8;
+  string created_at = 9;
+}
+
+message GetDeviceRequest {
+  string id = 1;
+}
+
+message ListDevicesRequest {
+  string user_id = 1;
+}
+
+message ListDevicesResponse {
+  repeated DeviceResponse devices = 1;
+}
+
+message UpdateDeviceRequest {
+  string id = 1;
+  optional string name = 2;
+  optional bool is_active = 3;
+}
+
+message DeleteDeviceRequest {
+  string id = 1;
+}
+
+message GetDeviceConfigRequest {
+  string device_id = 1;
+  string protocol = 2; // wireguard, vless_reality, hysteria2, tuic
+  string server_id = 3;
+}
+
+message DeviceConfigResponse {
+  string config_yaml = 1;
+  string protocol = 2;
+  string server_host = 3;
+  int32 server_port = 4;
+  string public_key = 5;
+}
+
+// ============================================================
+// Transport Router Service
+// ============================================================
+service TransportRouter {
+  rpc SelectBestTransport(SelectTransportRequest) returns (SelectTransportResponse);
+  rpc ReportMetrics(ReportMetricsRequest) returns (Empty);
+  rpc GetAvailableTransports(GetAvailableTransportsRequest) returns (GetAvailableTransportsResponse);
+}
+
+message SelectTransportRequest {
+  string user_id = 1;
+  string device_id = 2;
+  string target_country = 3;
+  repeated string preferred_protocols = 4;
+  optional LatencyTestResult client_latency = 5;
+}
+
+message LatencyTestResult {
+  map<string, int64> protocol_latency_ms = 1; // protocol -> latency
+  double packet_loss_pct = 2;
+}
+
+message SelectTransportResponse {
+  string protocol = 1;
+  string server_id = 2;
+  string server_host = 3;
+  int32 server_port = 4;
+  string public_key = 5;
+  double score = 6;
+  repeated string fallback_protocols = 7;
+  repeated string fallback_servers = 8;
+}
+
+message ReportMetricsRequest {
+  string user_id = 1;
+  string device_id = 2;
+  string protocol = 3;
+  int64 latency_ms = 4;
+  double packet_loss_pct = 5;
+  int64 throughput_bps = 6;
+  int64 jitter_ms = 7;
+  string server_id = 8;
+}
+
+message GetAvailableTransportsRequest {
+  string user_id = 1;
+}
+
+message GetAvailableTransportsResponse {
+  repeated TransportOption transports = 1;
+}
+
+message TransportOption {
+  string protocol = 1;
+  double score = 2;
+  bool available = 3;
+}
+
+// ============================================================
+// Node Manager Service
+// ============================================================
+service NodeManager {
+  rpc RegisterNode(RegisterNodeRequest) returns (RegisterNodeResponse);
+  rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+  rpc GetOptimalNode(GetOptimalNodeRequest) returns (NodeResponse);
+  rpc ListNodeByRegion(ListNodesByRegionRequest) returns (ListNodesResponse);
+  rpc UpdateNodeLoad(UpdateNodeLoadRequest) returns (Empty);
+  rpc ReportHealth(ReportHealthRequest) returns (Empty);
+}
+
+message RegisterNodeRequest {
+  string name = 1;
+  string host = 2;
+  string ipv4 = 3;
+  string ipv6 = 4;
+  int32 port = 5;
+  string protocol = 6;
+  string public_key = 7;
+  string country = 8;
+  string city = 9;
+  double latitude = 10;
+  double longitude = 11;
+  int32 bandwidth_mbps = 12;
+  int32 max_connections = 13;
+  repeated string tags = 14;
+}
+
+message RegisterNodeResponse {
+  string node_id = 1;
+  string access_token = 2;
+}
+
+message HeartbeatRequest {
+  string node_id = 1;
+  int32 current_connections = 2;
+  double cpu_percent = 3;
+  double memory_percent = 4;
+  int64 bandwidth_used_mbps = 5;
+}
+
+message HeartbeatResponse {
+  bool acknowledged = 1;
+  repeated string actions = 2; // "update_config", "restart", "shutdown"
+}
+
+message GetOptimalNodeRequest {
+  string user_id = 1;
+  string target_country = 2;
+  string protocol = 3;
+  string client_ip = 4;
+}
+
+message NodeResponse {
+  string id = 1;
+  string name = 2;
+  string host = 3;
+  string ipv4 = 4;
+  string ipv6 = 5;
+  int32 port = 6;
+  string protocol = 7;
+  string public_key = 8;
+  string country = 9;
+  string city = 10;
+  int32 load_percent = 11;
+  int32 current_connections = 12;
+  int32 max_connections = 13;
+  repeated string tags = 14;
+}
+
+message ListNodesByRegionRequest {
+  string country = 1;
+  string protocol = 2;
+  int32 limit = 3;
+}
+
+message ListNodesResponse {
+  repeated NodeResponse nodes = 1;
+}
+
+message UpdateNodeLoadRequest {
+  string node_id = 1;
+  int32 current_connections = 2;
+  int32 load_percent = 3;
+}
+
+message ReportHealthRequest {
+  string node_id = 1;
+  bool is_healthy = 2;
+  string health_message = 3;
+}
+
+// ============================================================
+// Billing Service
+// ============================================================
+service BillingService {
+  rpc CreateSubscription(CreateSubscriptionRequest) returns (SubscriptionResponse);
+  rpc GetSubscription(GetSubscriptionRequest) returns (SubscriptionResponse);
+  rpc CancelSubscription(CancelSubscriptionRequest) returns (Empty);
+  rpc ChangePlan(ChangePlanRequest) returns (SubscriptionResponse);
+  rpc VerifyPurchase(VerifyPurchaseRequest) returns (VerifyPurchaseResponse);
+  rpc RedeemPromocode(RedeemPromocodeRequest) returns (PromocodeResponse);
+}
+
+message CreateSubscriptionRequest {
+  string user_id = 1;
+  string plan_id = 2;
+  string payment_method = 3; // "stripe", "apple_iap", "google_iap"
+  string payment_token = 4;
+  optional string promocode = 5;
+}
+
+message SubscriptionResponse {
+  string id = 1;
+  string user_id = 2;
+  string plan_id = 3;
+  string status = 4;
+  string started_at = 5;
+  string expires_at = 6;
+  bool auto_renew = 7;
+  string plan_name = 8;
+}
+
+message GetSubscriptionRequest {
+  string user_id = 1;
+}
+
+message CancelSubscriptionRequest {
+  string subscription_id = 1;
+}
+
+message ChangePlanRequest {
+  string subscription_id = 1;
+  string new_plan_id = 2;
+}
+
+message VerifyPurchaseRequest {
+  string user_id = 1;
+  string provider = 2; // "apple" or "google"
+  string receipt = 3;
+  string product_id = 4;
+}
+
+message VerifyPurchaseResponse {
+  bool valid = 1;
+  string subscription_id = 2;
+  string expires_at = 3;
+}
+
+message RedeemPromocodeRequest {
+  string user_id = 1;
+  string code = 2;
+}
+
+message PromocodeResponse {
+  bool valid = 1;
+  int32 discount_percent = 2;
+  string message = 3;
+}
+
+// ============================================================
+// Common
+// ============================================================
+message Empty {}

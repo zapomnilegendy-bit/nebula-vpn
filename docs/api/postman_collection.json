@@ -1,0 +1,197 @@
+{
+  "info": {
+    "name": "NebulaVPN API",
+    "description": "REST API collection for NebulaVPN",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "https://api.nebula-vpn.io/v1" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"securepass123\",\n  \"promo_code\": \"WELCOME10\"\n}"
+            },
+            "header": [{ "key": "Content-Type", "value": "application/json" }]
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"securepass123\"\n}"
+            },
+            "header": [{ "key": "Content-Type", "value": "application/json" }]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "pm.collectionVariables.set('token', json.access_token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/refresh",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh_token\": \"{{token}}\"\n}"
+            },
+            "header": [{ "key": "Content-Type", "value": "application/json" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Servers",
+      "item": [
+        {
+          "name": "List Servers",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/servers",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Recommended Server",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/servers/recommend?lat=40.7128&lon=-74.0060&protocol=wireguard",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Devices",
+      "item": [
+        {
+          "name": "List Devices",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/devices",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Register Device",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/devices",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My iPhone\",\n  \"platform\": \"ios\",\n  \"push_token\": \"device-push-token\"\n}"
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ]
+          }
+        },
+        {
+          "name": "Get Config",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/devices/{{device_id}}/config?protocol=wireguard",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Connections",
+      "item": [
+        {
+          "name": "Sessions",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/connections?limit=10",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Stats",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/connections/stats",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Subscriptions",
+      "item": [
+        {
+          "name": "Plans",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/subscriptions/plans"
+          }
+        },
+        {
+          "name": "Create Checkout",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/subscriptions/create-checkout",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"plan_id\": \"pro\",\n  \"success_url\": \"https://nebula-vpn.io/success\",\n  \"cancel_url\": \"https://nebula-vpn.io/cancel\"\n}"
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ]
+          }
+        },
+        {
+          "name": "Apply Promo Code",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/subscriptions/promocodes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"WELCOME10\"\n}"
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/health"
+          }
+        }
+      ]
+    }
+  ]
+}

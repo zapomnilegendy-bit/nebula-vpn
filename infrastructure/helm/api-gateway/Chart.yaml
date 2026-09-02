@@ -1,0 +1,13 @@
+apiVersion: v2
+name: api-gateway
+description: NebulaVPN API Gateway
+version: 1.0.0
+appVersion: "1.0.0"
+type: application
+keywords:
+  - vpn
+  - api
+  - nebula
+maintainers:
+  - name: NebulaVPN Team
+    email: dev@nebula-vpn.io

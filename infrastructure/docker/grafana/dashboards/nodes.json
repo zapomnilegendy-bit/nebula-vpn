@@ -1,0 +1,57 @@
+{
+  "title": "NebulaVPN - Node Health",
+  "uid": "nebula-nodes",
+  "tags": ["nebula", "vpn"],
+  "panels": [
+    {
+      "title": "Nodes by Region",
+      "type": "geomap",
+      "gridPos": {"x": 0, "y": 0, "w": 24, "h": 10},
+      "targets": [{"expr": "nebula_node_info"}],
+      "options": {
+        "mapType": "world",
+        "colors": ["green", "orange", "red"]
+      }
+    },
+    {
+      "title": "Node CPU Usage",
+      "type": "gauge",
+      "gridPos": {"x": 0, "y": 10, "w": 6, "h": 6},
+      "targets": [{"expr": "avg by (node) (nebula_node_cpu_percent)"}],
+      "fieldConfig": {"defaults": {"unit": "percent", "max": 100}}
+    },
+    {
+      "title": "Node Memory Usage",
+      "type": "gauge",
+      "gridPos": {"x": 6, "y": 10, "w": 6, "h": 6},
+      "targets": [{"expr": "avg by (node) (nebula_node_memory_percent)"}],
+      "fieldConfig": {"defaults": {"unit": "percent", "max": 100}}
+    },
+    {
+      "title": "Active Connections per Node",
+      "type": "bargauge",
+      "gridPos": {"x": 12, "y": 10, "w": 6, "h": 6},
+      "targets": [{"expr": "nebula_node_connections"}]
+    },
+    {
+      "title": "Node Load Average",
+      "type": "timeseries",
+      "gridPos": {"x": 0, "y": 16, "w": 12, "h": 8},
+      "targets": [{"expr": "nebula_node_load"}]
+    },
+    {
+      "title": "Node Packet Loss",
+      "type": "timeseries",
+      "gridPos": {"x": 12, "y": 16, "w": 12, "h": 8},
+      "targets": [{"expr": "nebula_node_packet_loss"}],
+      "fieldConfig": {"defaults": {"unit": "percent"}}
+    },
+    {
+      "title": "Node Latency",
+      "type": "timeseries",
+      "gridPos": {"x": 0, "y": 24, "w": 12, "h": 8},
+      "targets": [{"expr": "nebula_node_latency_ms"}],
+      "fieldConfig": {"defaults": {"unit": "ms"}}
+    }
+  ]
+}

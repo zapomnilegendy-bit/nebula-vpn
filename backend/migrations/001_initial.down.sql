@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS promocodes;
+DROP TABLE IF EXISTS connections;
+DROP TABLE IF EXISTS subscriptions;
+DROP TABLE IF EXISTS plans;
+DROP TABLE IF EXISTS vpn_servers;
+DROP TABLE IF EXISTS devices;
+DROP TABLE IF EXISTS users;

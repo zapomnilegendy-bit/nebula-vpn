@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f7;
+    --text-primary: #1c1c1e;
+    --text-secondary: #8e8e93;
+    --accent: #007AFF;
+  }
+  .dark {
+    --bg-primary: #000000;
+    --bg-secondary: #0a0a0a;
+    --text-primary: #f5f5f7;
+    --text-secondary: #8e8e93;
+  }
+}
+
+@layer components {
+  .card { @apply rounded-apple-lg border border-black/5 dark:border-white/5 bg-white dark:bg-nebula-900 shadow-apple; }
+  .btn-primary { @apply rounded-apple bg-black dark:bg-white text-white dark:text-black font-semibold text-sm px-4 py-2 transition-all hover:opacity-80; }
+  .btn-secondary { @apply rounded-apple bg-nebula-100 dark:bg-nebula-800 text-nebula-900 dark:text-nebula-100 font-semibold text-sm px-4 py-2 transition-all hover:bg-nebula-200 dark:hover:bg-nebula-700; }
+}

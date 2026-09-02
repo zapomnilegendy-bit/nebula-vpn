@@ -1,0 +1,7 @@
+{{- range $name, $config := .Values.panels }}
+{{- if $config.enabled }}
+{{- $params := merge $config (dict "Release" $.Release "global" $.Values.global "panel" $name) }}
+---
+{{ template "panel" $params }}
+{{- end }}
+{{- end }}

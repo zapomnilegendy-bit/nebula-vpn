@@ -1,0 +1,21 @@
+# macOS Packet Tunnel Provider Entitlements
+#
+# Required for VPN functionality on macOS
+# Xcode Capabilities: Network Extensions > Packet Tunnel
+
+# VPN
+com.apple.developer.networking.vpn.api.allow
+
+# Network Extension
+com.apple.developer.networking.networkextension (packet-tunnel-provider)
+
+# Sandbox
+com.apple.security.app-sandbox
+com.apple.security.network.client
+com.apple.security.network.server
+com.apple.security.device.usb
+com.apple.security.personal-information.addressbook
+com.apple.security.personal-information.location
+
+# Keychain
+keychain-access-groups ($(AppIdentifierPrefix)com.nebula.vpn)

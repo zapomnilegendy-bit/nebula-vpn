@@ -1,0 +1,27 @@
+# SwiftLint configuration
+disabled_rules:
+  - trailing_whitespace
+  - line_length
+  - identifier_name
+  - type_name
+
+opt_in_rules:
+  - empty_count
+  - force_unwrapping
+  - implicit_return
+  - sorted_imports
+
+analyzer_rules:
+  - unused_import
+
+type_body_length:
+  warning: 300
+  error: 500
+
+file_length:
+  warning: 500
+  error: 800
+
+function_body_length:
+  warning: 50
+  error: 100

@@ -1,0 +1,56 @@
+# Dependencies
+vendor/
+node_modules/
+*.sum
+
+# Build
+build/
+dist/
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.local
+*.key
+*.pem
+*.cert
+
+# Docker
+.docker/
+
+# Terraform
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# Ansible
+*.retry
+
+# Migrations
+*.sqlite
+
+# Logs
+*.log
+
+# Coverage
+coverage.out
+coverage.html
+
+# Infrastructure secrets (server envs)
+infrastructure/servers/*.env

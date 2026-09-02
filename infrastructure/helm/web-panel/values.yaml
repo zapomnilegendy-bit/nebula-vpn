@@ -1,0 +1,34 @@
+panels:
+  user:
+    enabled: true
+    replicaCount: 2
+    image:
+      repository: ghcr.io/nebula-vpn/web/user-panel
+      tag: latest
+    service:
+      port: 3000
+    env:
+      NEXT_PUBLIC_API_URL: https://api.nebula-vpn.io
+      NEXT_PUBLIC_STRIPE_KEY: pk_live_...
+    ingress:
+      host: app.nebula-vpn.io
+  admin:
+    enabled: true
+    replicaCount: 1
+    image:
+      repository: ghcr.io/nebula-vpn/web/admin-panel
+      tag: latest
+    service:
+      port: 3000
+    env:
+      NEXT_PUBLIC_API_URL: https://api.nebula-vpn.io
+    ingress:
+      host: admin.nebula-vpn.io
+      allowedCIDRs:
+        - 10.0.0.0/8
+        - 172.16.0.0/12
+
+global:
+  domain: nebula-vpn.io
+  tlsSecret: web-tls
+  ingressClass: nginx

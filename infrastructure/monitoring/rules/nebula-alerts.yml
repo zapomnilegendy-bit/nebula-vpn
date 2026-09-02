@@ -1,0 +1,97 @@
+groups:
+  - name: nebula-alerts
+    interval: 30s
+    rules:
+      # Node health
+      - alert: NodeDown
+        expr: up{job="nebula-node"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Node {{ $labels.node }} is down"
+          description: "Node {{ $labels.node }} has been unreachable for >1m"
+
+      - alert: NodeHighCPU
+        expr: nebula_node_cpu_percent > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Node {{ $labels.node }} CPU > 85%"
+          description: "Node {{ $labels.node }} CPU at {{ $value }}% for >5m"
+
+      - alert: NodeHighMemory
+        expr: nebula_node_memory_percent > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Node {{ $labels.node }} Memory > 85%"
+
+      - alert: NodeHighPacketLoss
+        expr: nebula_node_packet_loss > 5
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Node {{ $labels.node }} packet loss > 5%"
+
+      # Connection health
+      - alert: HighConnectionErrors
+        expr: rate(nebula_connection_errors_total[5m]) > 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High connection error rate ({{ $value }}/s)"
+
+      - alert: LowActiveConnections
+        expr: nebula_active_connections < 10
+        for: 15m
+        labels:
+          severity: info
+        annotations:
+          summary: "Active connections dropped below 10"
+
+      - alert: HighLatency
+        expr: avg(nebula_node_latency_ms) > 500
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Average node latency > 500ms"
+
+      # API health
+      - alert: APIHighLatency
+        expr: histogram_quantile(0.95, rate(nebula_api_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "API p95 latency > 2s"
+
+      - alert: APIErrorRate
+        expr: sum(rate(nebula_api_requests_total{status=~"5.."}[5m])) / sum(rate(nebula_api_requests_total[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "API error rate > 5%"
+
+      # Business
+      - alert: RevenueDrop
+        expr: nebula_mrr < (nebula_mrr offset 7d) * 0.9
+        for: 1d
+        labels:
+          severity: warning
+        annotations:
+          summary: "MRR dropped >10% compared to last week"
+
+      - alert: HighChurn
+        expr: nebula_churn_rate > 0.1
+        for: 1d
+        labels:
+          severity: warning
+        annotations:
+          summary: "Churn rate > 10%"

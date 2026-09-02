@@ -1,0 +1,83 @@
+{
+  "app": {
+    "name": "NebulaVPN",
+    "tagline": "Acceso a internet seguro, privado y sin restricciones.",
+    "version": "1.0.0"
+  },
+  "connection": {
+    "connected": "Conectado",
+    "disconnected": "Desconectado",
+    "connecting": "Conectando…",
+    "reconnecting": "Reconectando…",
+    "error": "Error de conexión",
+    "duration": "Duración",
+    "data": "Datos usados"
+  },
+  "server": {
+    "select": "Seleccionar servidor",
+    "fastest": "Servidor más rápido",
+    "auto_selected": "Seleccionado automáticamente",
+    "all_locations": "Todas las ubicaciones",
+    "search": "Buscar ubicaciones",
+    "load": "{percent}% de carga",
+    "latency": "{latency} ms",
+    "premium": "PREMIUM"
+  },
+  "auth": {
+    "unlock": "Desbloquear",
+    "authenticate": "Autentícate para acceder a tu conexión segura",
+    "login": "Iniciar sesión",
+    "register": "Crear cuenta",
+    "email": "Correo",
+    "password": "Contraseña"
+  },
+  "settings": {
+    "title": "Ajustes",
+    "kill_switch": "Interruptor de apagado",
+    "split_tunnel": "Túnel dividido",
+    "auto_protocol": "Protocolo automático",
+    "dns": "Configuración DNS",
+    "dns_doh": "DNS sobre HTTPS",
+    "dns_dot": "DNS sobre TLS",
+    "dns_leak": "Prevenir fugas DNS",
+    "account": "Cuenta",
+    "plan": "Plan",
+    "data_used": "Datos usados",
+    "about": "Acerca de",
+    "version": "Versión"
+  },
+  "subscription": {
+    "title": "Suscripción",
+    "current_plan": "Plan actual",
+    "active": "Tu suscripción está activa",
+    "choose_plan": "Elige tu plan",
+    "per_month": "por mes",
+    "per_year": "por año",
+    "subscribe": "Continuar con {plan}",
+    "cancel_anytime": "Cancela cuando quieras. Se renueva automáticamente.",
+    "popular": "POPULAR",
+    "free": "Gratis",
+    "pro": "Pro",
+    "ultimate": "Ultimate"
+  },
+  "onboarding": {
+    "page1_title": "Privacidad primero",
+    "page1_desc": "NebulaVPN cifra todo tu tráfico con WireGuard de grado militar. Sin registros, sin seguimiento.",
+    "page2_title": "Red global",
+    "page2_desc": "Accede a contenido desde más de 50 ubicaciones en todo el mundo. Tu IP real permanece oculta.",
+    "page3_title": "Tecnología Anti-DPI",
+    "page3_desc": "La ofuscación avanzada evita la inspección profunda de paquetes. Funciona en las redes más restrictivas.",
+    "page4_title": "Conectar con un clic",
+    "page4_desc": "Importa configuración mediante código QR o selecciona de nuestra lista optimizada de servidores.",
+    "skip": "Saltar",
+    "continue": "Continuar",
+    "get_started": "Comenzar"
+  },
+  "error": {
+    "general": "Algo salió mal",
+    "network": "Error de red. Verifica tu conexión.",
+    "auth": "Autenticación fallida. Inicia sesión de nuevo.",
+    "server_full": "Este servidor está al máximo. Prueba otra ubicación.",
+    "upgrade": "Mejora tu plan para acceder a este servidor."
+  }
+}

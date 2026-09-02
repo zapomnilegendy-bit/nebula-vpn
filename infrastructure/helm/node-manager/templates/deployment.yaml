@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-node-manager
+  labels:
+    app: node-manager
+    release: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: node-manager
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: node-manager
+        release: {{ .Release.Name }}
+    spec:
+      serviceAccountName: node-manager
+      containers:
+        - name: node-manager
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.service.port }}
+              name: grpc
+            - containerPort: 9091
+              name: metrics
+          env:
+            {{- range $key, $val := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $val | quote }}
+            {{- end }}
+            - name: NEBULA_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nebula-secrets
+                  key: db-password
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-node-manager
+  labels:
+    app: node-manager
+spec:
+  ports:
+    - port: {{ .Values.service.port }}
+      name: grpc
+    - port: 9091
+      name: metrics
+  selector:
+    app: node-manager
+    release: {{ .Release.Name }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: node-manager
+  labels:
+    app: node-manager
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: node-manager
+rules:
+  - apiGroups: [""]
+    resources: ["nodes", "pods", "services"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments", "statefulsets"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: node-manager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: node-manager
+subjects:
+  - kind: ServiceAccount
+    name: node-manager
+    namespace: {{ .Release.Namespace }}

@@ -1,0 +1,81 @@
+client:
+  name: basic
+  file-system: device-agnostic
+tools: {}
+targets:
+  "NebulaVPN-arm64-apple-macosx-debug.exe": ["<NebulaVPN-arm64-apple-macosx-debug.exe>"]
+  "NebulaVPN-arm64-apple-macosx-debug.module": ["<NebulaVPN-arm64-apple-macosx-debug.module>"]
+  "PackageStructure": ["<PackageStructure>"]
+  "main": ["<NebulaVPN-arm64-apple-macosx-debug.exe>","<NebulaVPN-arm64-apple-macosx-debug.module>"]
+  "test": ["<NebulaVPN-arm64-apple-macosx-debug.exe>","<NebulaVPN-arm64-apple-macosx-debug.module>"]
+default: "main"
+nodes:
+  "/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+  "/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN":
+    is-mutated: true
+commands:
+  "/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN-entitlement.plist":
+    tool: write-auxiliary-file
+    inputs: ["<entitlement-plist>","<com.apple.security.get-task-allow>"]
+    outputs: ["/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN-entitlement.plist"]
+    description: "Write auxiliary file /Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN-entitlement.plist"
+
+  "/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/App.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/ContentView.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Models/VPNState.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Services/AutoUpdater.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Services/CrashReporter.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Services/KeychainManager.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Services/QRCodeService.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Services/VPNService.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/ViewModels/MainViewModel.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Views/AboutView.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Views/ConnectionRingView.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Views/OnboardingView.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Views/ServerPickerView.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Views/SettingsView.swift"]
+    outputs: ["/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/sources"]
+    description: "Write auxiliary file /Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/sources"
+
+  "/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.product/Objects.LinkFileList":
+    tool: write-auxiliary-file
+    inputs: ["<link-file-list>","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/AboutView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/App.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/AutoUpdater.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/ConnectionRingView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/ContentView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/CrashReporter.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/KeychainManager.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/MainViewModel.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/OnboardingView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/QRCodeService.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/ServerPickerView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/SettingsView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/VPNService.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/VPNState.swift.o"]
+    outputs: ["/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.product/Objects.LinkFileList"]
+    description: "Write auxiliary file /Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.product/Objects.LinkFileList"
+
+  "/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt":
+    tool: write-auxiliary-file
+    inputs: ["<swift-get-version>","/Library/Developer/CommandLineTools/usr/bin/swiftc"]
+    outputs: ["/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"]
+    always-out-of-date: "true"
+    description: "Write auxiliary file /Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"
+
+  "<NebulaVPN-arm64-apple-macosx-debug.exe>":
+    tool: phony
+    inputs: ["<NebulaVPN-arm64-apple-macosx-debug.exe-CodeSigning>"]
+    outputs: ["<NebulaVPN-arm64-apple-macosx-debug.exe>"]
+
+  "<NebulaVPN-arm64-apple-macosx-debug.module>":
+    tool: phony
+    inputs: ["/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/App.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/ContentView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/VPNState.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/AutoUpdater.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/CrashReporter.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/KeychainManager.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/QRCodeService.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/VPNService.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/MainViewModel.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/AboutView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/ConnectionRingView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/OnboardingView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/ServerPickerView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/SettingsView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/Modules/NebulaVPN.swiftmodule"]
+    outputs: ["<NebulaVPN-arm64-apple-macosx-debug.module>"]
+
+  "C.NebulaVPN-arm64-apple-macosx-debug.exe":
+    tool: shell
+    inputs: ["/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/AboutView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/App.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/AutoUpdater.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/ConnectionRingView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/ContentView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/CrashReporter.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/KeychainManager.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/MainViewModel.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/OnboardingView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/QRCodeService.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/ServerPickerView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/SettingsView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/VPNService.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/VPNState.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.product/Objects.LinkFileList"]
+    outputs: ["/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN"]
+    description: "Linking ./.build/arm64-apple-macosx/debug/NebulaVPN"
+    args: ["/Library/Developer/CommandLineTools/usr/bin/swiftc","-L","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug","-o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN","-module-name","NebulaVPN","-Xlinker","-no_warn_duplicate_libraries","-emit-executable","-Xlinker","-alias","-Xlinker","_NebulaVPN_main","-Xlinker","_main","-Xlinker","-rpath","-Xlinker","@loader_path","@/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.product/Objects.LinkFileList","-Xlinker","-rpath","-Xlinker","/Library/Developer/CommandLineTools/usr/lib/swift-6.2/macosx","-target","arm64-apple-macosx14.0","-Xlinker","-add_ast_path","-Xlinker","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/Modules/NebulaVPN.swiftmodule","-I","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-L","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-plugin-path","/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing","-sdk","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-g"]
+
+  "C.NebulaVPN-arm64-apple-macosx-debug.exe-entitlements":
+    tool: shell
+    inputs: ["/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN-entitlement.plist"]
+    outputs: ["<NebulaVPN-arm64-apple-macosx-debug.exe-CodeSigning>"]
+    description: "Applying debug entitlements to ./.build/arm64-apple-macosx/debug/NebulaVPN"
+    args: ["codesign","--force","--sign","-","--entitlements","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN-entitlement.plist","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN"]
+
+  "C.NebulaVPN-arm64-apple-macosx-debug.module":
+    tool: shell
+    inputs: ["/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/App.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/ContentView.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Models/VPNState.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Services/AutoUpdater.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Services/CrashReporter.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Services/KeychainManager.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Services/QRCodeService.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Services/VPNService.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/ViewModels/MainViewModel.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Views/AboutView.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Views/ConnectionRingView.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Views/OnboardingView.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Views/ServerPickerView.swift","/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/Views/SettingsView.swift","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/sources"]
+    outputs: ["/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/App.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/ContentView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/VPNState.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/AutoUpdater.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/CrashReporter.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/KeychainManager.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/QRCodeService.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/VPNService.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/MainViewModel.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/AboutView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/ConnectionRingView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/OnboardingView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/ServerPickerView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/SettingsView.swift.o","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/Modules/NebulaVPN.swiftmodule"]
+    description: "Compiling Swift Module 'NebulaVPN' (14 sources)"
+    args: ["/Library/Developer/CommandLineTools/usr/bin/swiftc","-module-name","NebulaVPN","-emit-dependencies","-emit-module","-emit-module-path","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/Modules/NebulaVPN.swiftmodule","-output-file-map","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/output-file-map.json","-incremental","-c","@/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/NebulaVPN.build/sources","-I","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/Modules","-target","arm64-apple-macosx14.0","-incremental","-enable-batch-mode","-serialize-diagnostics","-index-store-path","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/index/store","-Onone","-enable-testing","-j11","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/Users/focus/nebula-vpn/clients/macos/.build/arm64-apple-macosx/debug/ModuleCache","-parseable-output","-Xfrontend","-entry-point-function-name","-Xfrontend","NebulaVPN_main","-swift-version","5","-I","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-L","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-plugin-path","/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing","-sdk","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-g","-Xcc","-isysroot","-Xcc","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-Xcc","-fPIC","-Xcc","-g","-package-name","macos"]
+
+  "PackageStructure":
+    tool: package-structure-tool
+    inputs: ["/Users/focus/nebula-vpn/clients/macos/Sources/NebulaVPN/","/Users/focus/nebula-vpn/clients/macos/Package.swift","/Users/focus/nebula-vpn/clients/macos/Package.resolved"]
+    outputs: ["<PackageStructure>"]
+    description: "Planning build"
+    allow-missing-inputs: true
+

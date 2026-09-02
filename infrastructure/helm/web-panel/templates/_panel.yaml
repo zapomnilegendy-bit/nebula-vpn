@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-{{ .panel }}
+  labels:
+    panel: {{ .panel }}
+spec:
+  replicas: {{ .replicaCount }}
+  selector:
+    matchLabels:
+      panel: {{ .panel }}
+  template:
+    metadata:
+      labels:
+        panel: {{ .panel }}
+    spec:
+      containers:
+        - name: {{ .panel }}
+          image: "{{ .image.repository }}:{{ .image.tag }}"
+          ports:
+            - containerPort: {{ .service.port }}
+          env:
+            {{- range $key, $val := .env }}
+            - name: {{ $key }}
+              value: {{ $val | quote }}
+            {{- end }}
+          resources:
+            limits: { cpu: 500m, memory: 512Mi }
+            requests: { cpu: 200m, memory: 256Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-{{ .panel }}
+spec:
+  ports:
+    - port: {{ .service.port }}
+      targetPort: {{ .service.port }}
+  selector:
+    panel: {{ .panel }}
+---
+{{- if .ingress }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-{{ .panel }}
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    {{- if .ingress.allowedCIDRs }}
+    nginx.ingress.kubernetes.io/whitelist-source-range: {{ join "," .ingress.allowedCIDRs }}
+    {{- end }}
+spec:
+  ingressClassName: {{ $.global.ingressClass }}
+  tls:
+    - hosts: [{{ .ingress.host }}]
+      secretName: {{ $.global.tlsSecret }}
+  rules:
+    - host: {{ .ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-{{ .panel }}
+                port:
+                  number: {{ .service.port }}
+{{- end }}

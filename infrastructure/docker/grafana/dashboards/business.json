@@ -1,0 +1,65 @@
+{
+  "title": "NebulaVPN - Business Metrics",
+  "uid": "nebula-business",
+  "tags": ["nebula", "billing"],
+  "panels": [
+    {
+      "title": "Monthly Recurring Revenue",
+      "type": "stat",
+      "gridPos": {"x": 0, "y": 0, "w": 4, "h": 4},
+      "targets": [{"expr": "nebula_mrr"}],
+      "fieldConfig": {"defaults": {"unit": "currencyUSD"}}
+    },
+    {
+      "title": "Total Subscribers",
+      "type": "stat",
+      "gridPos": {"x": 4, "y": 0, "w": 4, "h": 4},
+      "targets": [{"expr": "nebula_total_subscribers"}]
+    },
+    {
+      "title": "New Subscribers (30d)",
+      "type": "stat",
+      "gridPos": {"x": 8, "y": 0, "w": 4, "h": 4},
+      "targets": [{"expr": "increase(nebula_new_subscribers_total[30d])"}]
+    },
+    {
+      "title": "Churn Rate (30d)",
+      "type": "stat",
+      "gridPos": {"x": 12, "y": 0, "w": 4, "h": 4},
+      "targets": [{"expr": "nebula_churn_rate"}],
+      "fieldConfig": {"defaults": {"unit": "percent"}}
+    },
+    {
+      "title": "Plan Distribution",
+      "type": "piechart",
+      "gridPos": {"x": 16, "y": 0, "w": 8, "h": 8},
+      "targets": [{"expr": "sum by (plan) (nebula_subscribers_by_plan)"}]
+    },
+    {
+      "title": "Revenue Over Time",
+      "type": "timeseries",
+      "gridPos": {"x": 0, "y": 4, "w": 16, "h": 8},
+      "targets": [
+        {"expr": "increase(nebula_revenue_total[1d])", "legendFormat": "Revenue"}
+      ]
+    },
+    {
+      "title": "DAU",
+      "type": "timeseries",
+      "gridPos": {"x": 0, "y": 12, "w": 8, "h": 8},
+      "targets": [{"expr": "nebula_dau"}]
+    },
+    {
+      "title": "Stripe Events",
+      "type": "timeseries",
+      "gridPos": {"x": 8, "y": 12, "w": 8, "h": 8},
+      "targets": [{"expr": "rate(nebula_stripe_events_total[5m])"}]
+    },
+    {
+      "title": "Revenue by Country",
+      "type": "bargauge",
+      "gridPos": {"x": 16, "y": 12, "w": 8, "h": 8},
+      "targets": [{"expr": "topk(10, sum by (country) (nebula_revenue_by_country))"}]
+    }
+  ]
+}

@@ -1,0 +1,388 @@
+openapi: 3.0.3
+info:
+  title: NebulaVPN API
+  description: |
+    REST API for NebulaVPN - secure VPN service with anti-DPI technology.
+    Base URL: `https://api.nebula-vpn.io/v1`
+  version: 1.0.0
+  contact:
+    name: NebulaVPN Team
+    email: dev@nebula-vpn.io
+  license:
+    name: Proprietary
+
+servers:
+  - url: https://api.nebula-vpn.io/v1
+    description: Production
+  - url: https://api-staging.nebula-vpn.io/v1
+    description: Staging
+
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string, minLength: 8 }
+                promo_code: { type: string }
+      responses:
+        201: { description: User created }
+        409: { description: Email already exists }
+
+  /auth/login:
+    post:
+      summary: Login
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string }
+                password: { type: string }
+      responses:
+        200:
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token: { type: string }
+                  refresh_token: { type: string }
+                  expires_in: { type: integer }
+        401: { description: Invalid credentials }
+
+  /auth/refresh:
+    post:
+      summary: Refresh access token
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [refresh_token]
+              properties:
+                refresh_token: { type: string }
+      responses:
+        200:
+          description: Token refreshed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token: { type: string }
+                  expires_in: { type: integer }
+
+  /devices:
+    get:
+      summary: List user devices
+      tags: [Devices]
+      security: [{ bearerAuth: [] }]
+      responses:
+        200:
+          description: Device list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
+    post:
+      summary: Register a new device
+      tags: [Devices]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, platform]
+              properties:
+                name: { type: string }
+                platform: { type: string, enum: [ios, android, macos, windows] }
+                push_token: { type: string }
+      responses:
+        201:
+          description: Device created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+
+  /devices/{id}:
+    delete:
+      summary: Remove a device
+      tags: [Devices]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        204: { description: Device removed }
+
+  /devices/{id}/config:
+    get:
+      summary: Get WireGuard config for device
+      tags: [Devices]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+        - { name: protocol, in: query, schema: { type: string, enum: [wireguard, vless, hysteria2, tuic] } }
+      responses:
+        200:
+          description: VPN configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VPNConfig'
+
+  /servers:
+    get:
+      summary: List VPN servers
+      tags: [Servers]
+      responses:
+        200:
+          description: Server list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Server'
+
+  /servers/recommend:
+    get:
+      summary: Get recommended server
+      tags: [Servers]
+      parameters:
+        - { name: lat, in: query, schema: { type: number } }
+        - { name: lon, in: query, schema: { type: number } }
+        - { name: protocol, in: query, schema: { type: string } }
+      responses:
+        200:
+          description: Recommended server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Server'
+
+  /connections:
+    get:
+      summary: Get connection sessions
+      tags: [Connections]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: limit, in: query, schema: { type: integer, default: 20 } }
+        - { name: offset, in: query, schema: { type: integer, default: 0 } }
+      responses:
+        200:
+          description: Connection sessions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessions: { type: array, items: { $ref: '#/components/schemas/Session' } }
+                  total: { type: integer }
+
+  /connections/stats:
+    get:
+      summary: Get connection statistics
+      tags: [Connections]
+      security: [{ bearerAuth: [] }]
+      responses:
+        200:
+          description: Connection stats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectionStats'
+
+  /subscriptions/plans:
+    get:
+      summary: List subscription plans
+      tags: [Subscriptions]
+      responses:
+        200:
+          description: Available plans
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plan'
+
+  /subscriptions/create-checkout:
+    post:
+      summary: Create Stripe checkout session
+      tags: [Subscriptions]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [plan_id]
+              properties:
+                plan_id: { type: string }
+                success_url: { type: string }
+                cancel_url: { type: string }
+      responses:
+        200:
+          description: Checkout session URL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url: { type: string }
+                  session_id: { type: string }
+
+  /subscriptions/promocodes:
+    post:
+      summary: Apply promo code
+      tags: [Subscriptions]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [code]
+              properties:
+                code: { type: string }
+      responses:
+        200:
+          description: Promo code applied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  discount_percent: { type: integer }
+                  new_price: { type: number }
+
+  /health:
+    get:
+      summary: Health check
+      tags: [System]
+      responses:
+        200:
+          description: Service healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, example: ok }
+                  version: { type: string }
+                  uptime: { type: integer }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Device:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        platform: { type: string }
+        public_key: { type: string }
+        created_at: { type: string, format: date-time }
+
+    Server:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        city: { type: string }
+        country: { type: string }
+        country_code: { type: string }
+        host: { type: string }
+        port: { type: integer }
+        public_key: { type: string }
+        load_percent: { type: integer }
+        latency_ms: { type: integer }
+        is_premium: { type: boolean }
+        supported_protocols:
+          type: array
+          items:
+            type: string
+            enum: [wireguard, vless_reality, hysteria2, tuic]
+
+    VPNConfig:
+      type: object
+      properties:
+        interface:
+          type: object
+          properties:
+            private_key: { type: string }
+            address: { type: string }
+            dns: { type: array, items: { type: string } }
+        peer:
+          type: object
+          properties:
+            public_key: { type: string }
+            endpoint: { type: string }
+            allowed_ips: { type: array, items: { type: string } }
+            persistent_keepalive: { type: integer }
+
+    Session:
+      type: object
+      properties:
+        id: { type: string }
+        server_id: { type: string }
+        server_city: { type: string }
+        protocol: { type: string }
+        started_at: { type: string, format: date-time }
+        ended_at: { type: string, format: date-time }
+        bytes_rx: { type: integer }
+        bytes_tx: { type: integer }
+        duration_seconds: { type: integer }
+
+    ConnectionStats:
+      type: object
+      properties:
+        total_sessions: { type: integer }
+        total_bytes_rx: { type: integer }
+        total_bytes_tx: { type: integer }
+        active_sessions: { type: integer }
+        avg_duration_seconds: { type: number }
+        today_bytes_rx: { type: integer }
+        today_bytes_tx: { type: integer }
+
+    Plan:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        price_monthly: { type: number }
+        price_yearly: { type: number }
+        features:
+          type: array
+          items: { type: string }
+        device_limit: { type: integer }
+        server_access: { type: string }
+        speed_limit: { type: string }

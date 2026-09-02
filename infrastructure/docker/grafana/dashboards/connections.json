@@ -1,0 +1,82 @@
+{
+  "title": "NebulaVPN - Connection Overview",
+  "uid": "nebula-connections",
+  "tags": ["nebula", "vpn"],
+  "timezone": "browser",
+  "panels": [
+    {
+      "title": "Active Connections",
+      "type": "stat",
+      "gridPos": {"x": 0, "y": 0, "w": 4, "h": 4},
+      "targets": [{"expr": "sum(nebula_active_connections)", "legendFormat": "Active"}],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "color": {"mode": "thresholds"},
+          "thresholds": {"mode": "absolute", "steps": [{"value": null, "color": "green"}, {"value": 1000, "color": "orange"}, {"value": 5000, "color": "red"}]}
+        }
+      }
+    },
+    {
+      "title": "Total Connections Today",
+      "type": "stat",
+      "gridPos": {"x": 4, "y": 0, "w": 4, "h": 4},
+      "targets": [{"expr": "increase(nebula_connections_total[24h])"}],
+      "fieldConfig": {"defaults": {"unit": "none"}}
+    },
+    {
+      "title": "Concurrent Users",
+      "type": "stat",
+      "gridPos": {"x": 8, "y": 0, "w": 4, "h": 4},
+      "targets": [{"expr": "sum(nebula_concurrent_users)"}]
+    },
+    {
+      "title": "Data Transferred (24h)",
+      "type": "stat",
+      "gridPos": {"x": 12, "y": 0, "w": 4, "h": 4},
+      "targets": [{"expr": "sum(increase(nebula_bytes_total[24h]))"}],
+      "fieldConfig": {"defaults": {"unit": "bytes"}}
+    },
+    {
+      "title": "Currently Connected",
+      "type": "stat",
+      "gridPos": {"x": 16, "y": 0, "w": 4, "h": 4},
+      "targets": [{"expr": "sum(nebula_active_connections)"}],
+      "fieldConfig": {"defaults": {"unit": "none"}},
+      "description": "Number of active VPN connections"
+    },
+    {
+      "title": "Connections by Protocol",
+      "type": "piechart",
+      "gridPos": {"x": 0, "y": 4, "w": 8, "h": 8},
+      "targets": [{"expr": "sum by (protocol) (nebula_connections_by_protocol)"}],
+      "options": {"legend": {"displayMode": "table", "placement": "right"}}
+    },
+    {
+      "title": "Connections by Country",
+      "type": "bargauge",
+      "gridPos": {"x": 8, "y": 4, "w": 8, "h": 8},
+      "targets": [{"expr": "topk(10, sum by (country) (nebula_connections_by_country))"}]
+    },
+    {
+      "title": "Latency Heatmap",
+      "type": "heatmap",
+      "gridPos": {"x": 16, "y": 4, "w": 8, "h": 8},
+      "targets": [{"expr": "rate(nebula_latency_seconds_bucket[5m])"}]
+    },
+    {
+      "title": "Connection Duration Distribution",
+      "type": "histogram",
+      "gridPos": {"x": 0, "y": 12, "w": 12, "h": 8},
+      "targets": [{"expr": "sum by (le) (increase(nebula_connection_duration_seconds_bucket[1h]))"}]
+    },
+    {
+      "title": "Connection Errors",
+      "type": "timeseries",
+      "gridPos": {"x": 12, "y": 12, "w": 12, "h": 8},
+      "targets": [
+        {"expr": "rate(nebula_connection_errors_total[5m])", "legendFormat": "{{error}}"}
+      ]
+    }
+  ]
+}

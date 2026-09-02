@@ -1,0 +1,52 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [Backend CI, Web Panels CI]
+    types: [completed]
+    branches: [main]
+
+env:
+  AWS_REGION: us-east-1
+  ECS_CLUSTER: nebula-production
+
+jobs:
+  deploy-backend:
+    name: Deploy API Gateway
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.workflow == 'Backend CI' && github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Deploy to ECS
+        run: |
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service api-gateway \
+            --force-new-deployment
+
+  deploy-web:
+    name: Deploy Web Panels
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.workflow == 'Web Panels CI' && github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Deploy User Panel
+        run: |
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service user-panel \
+            --force-new-deployment
+      - name: Deploy Admin Panel
+        run: |
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service admin-panel \
+            --force-new-deployment

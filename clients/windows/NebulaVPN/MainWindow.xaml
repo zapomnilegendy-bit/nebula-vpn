@@ -1,0 +1,121 @@
+<!-- MainWindow.xaml -->
+<Window
+    x:Class="NebulaVPN.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="NebulaVPN"
+    MinWidth="380" MinHeight="520"
+    Width="400" Height="580"
+    ExtendsContentIntoTitleBar="True"
+    WindowCornerPreference="Round">
+
+    <Window.Resources>
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefault}" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefault}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style x:Key="DangerButton" BasedOn="{StaticResource AccentButtonStyle}">
+            <Setter Property="Background" Value="#FF3B30" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title bar -->
+        <Grid Grid.Row="0">
+            <TextBlock Text="NebulaVPN" FontSize="13" FontWeight="SemiBold"
+                       Margin="16,0,0,0" VerticalAlignment="Center"/>
+        </Grid>
+
+        <!-- Main content -->
+        <Grid Grid.Row="1" Margin="24,0,24,24" x:Name="RootGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Connection ring -->
+            <Grid Grid.Row="0" HorizontalAlignment="Center" Margin="0,20,0,0"
+                  Width="200" Height="200">
+                <!-- Background ring -->
+                <Ellipse Stroke="{ThemeResource TextFillColorSecondary}"
+                         StrokeThickness="4" Opacity="0.12"
+                         Width="180" Height="180"/>
+                <!-- Active ring -->
+                <Ellipse x:Name="RingActive"
+                         Stroke="{ThemeResource SystemAccentColor}"
+                         StrokeThickness="4"
+                         StrokeDashArray="0.82 1"
+                         StrokeDashOffset="0.18"
+                         Opacity="0"
+                         Width="180" Height="180"/>
+                <!-- Shield icon -->
+                <Viewbox Width="56" Height="56">
+                    <SymbolIcon Symbol="Shield"/>
+                </Viewbox>
+            </Grid>
+
+            <!-- Status -->
+            <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,240,0,0">
+                <TextBlock x:Name="StatusText" Text="Not Connected"
+                           FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="DurationText" Text=""
+                           FontSize="12" FontFamily="Consolas"
+                           Opacity="0.5" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <!-- Data bar -->
+            <Border x:Name="DataBar" Grid.Row="1"
+                    Style="{StaticResource Card}" Height="36"
+                    VerticalAlignment="Top" Margin="0,12,0,0"
+                    Visibility="Collapsed">
+                <Grid Margin="12,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <SymbolIcon Grid.Column="0" Symbol="Download" FontSize="12" Opacity="0.5"/>
+                    <TextBlock Grid.Column="1" x:Name="DownloadText" Text="0 B"
+                               FontSize="12" FontFamily="Consolas" VerticalAlignment="Center" Margin="6,0,0,0"/>
+                    <SymbolIcon Grid.Column="2" Symbol="Upload" FontSize="12" Opacity="0.5" Margin="12,0,0,0"/>
+                    <TextBlock Grid.Column="3" x:Name="UploadText" Text="0 B"
+                               FontSize="12" FontFamily="Consolas" VerticalAlignment="Center" Margin="6,0,0,0"/>
+                </Grid>
+            </Border>
+
+            <!-- Server selector -->
+            <Button x:Name="ServerButton" Grid.Row="2"
+                    Height="52" Margin="0,0,0,12" Padding="16,0"
+                    HorizontalAlignment="Stretch" Click="OnServerClick">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" x:Name="ServerFlag" Text="🌍" FontSize="22" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="12,0,0,0">
+                        <TextBlock x:Name="ServerCity" Text="Select server" FontSize="14" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="ServerDetail" Text="" FontSize="11" Opacity="0.5"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="2" Text="›" FontSize="18" Opacity="0.3" VerticalAlignment="Center"/>
+                </Grid>
+            </Button>
+
+            <!-- Connect -->
+            <Button x:Name="ConnectButton" Grid.Row="3"
+                    Content="Connect" Height="50" CornerRadius="12"
+                    HorizontalAlignment="Stretch" Click="OnConnectClick"/>
+        </Grid>
+    </Grid>
+</Window>

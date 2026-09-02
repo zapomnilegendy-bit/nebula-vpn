@@ -1,0 +1,65 @@
+---
+- name: Setup VPN Node Server
+  hosts: all
+  become: yes
+  vars:
+    docker_compose_version: "2.27.0"
+    node_role: "vpn-node"
+    wireguard_port: 51820
+    nebula_api_url: "https://api.nebula-vpn.io"
+
+  pre_tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+  roles:
+    - docker-setup
+    - hardening
+
+  tasks:
+    - name: Create nebula directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: 0755
+      loop:
+        - /opt/nebula
+        - /opt/nebula/config
+        - /opt/nebula/data
+        - /var/log/nebula
+
+    - name: Copy docker-compose
+      template:
+        src: docker-compose.node.yml.j2
+        dest: /opt/nebula/docker-compose.yml
+        mode: 0644
+      notify: restart nebula
+
+    - name: Start Nebula services
+      docker_compose:
+        project_src: /opt/nebula
+        state: present
+        restarted: yes
+
+    - name: Register node with API
+      uri:
+        url: "{{ nebula_api_url }}/v1/nodes/register"
+        method: POST
+        body_format: json
+        body:
+          hostname: "{{ ansible_hostname }}"
+          public_ip: "{{ ansible_default_ipv4.address }}"
+          port: "{{ wireguard_port }}"
+          region: "{{ region | default('us-east') }}"
+          capacity: "{{ capacity | default(1000) }}"
+        status_code: 201
+      when: register_node | default(true)
+
+  handlers:
+    - name: restart nebula
+      docker_compose:
+        project_src: /opt/nebula
+        state: present
+        restarted: yes

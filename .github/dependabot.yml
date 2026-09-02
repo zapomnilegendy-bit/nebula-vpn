@@ -1,0 +1,86 @@
+version: 2
+updates:
+  # Go backend
+  - package-ecosystem: gomod
+    directory: /backend
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    labels:
+      - dependencies
+      - go
+    groups:
+      go-minor:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+
+  # Rust core
+  - package-ecosystem: cargo
+    directory: /clients/shared-core
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - rust
+
+  # Web user panel
+  - package-ecosystem: npm
+    directory: /web/user-panel
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    labels:
+      - dependencies
+      - web
+    groups:
+      nextjs:
+        patterns:
+          - "next"
+          - "eslint-config-next"
+      react:
+        patterns:
+          - "react*"
+          - "@types/react*"
+      tailwind:
+        patterns:
+          - "tailwindcss*"
+          - "postcss*"
+          - "autoprefixer"
+
+  # Web admin panel
+  - package-ecosystem: npm
+    directory: /web/admin-panel
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    labels:
+      - dependencies
+      - web
+
+  # Docker
+  - package-ecosystem: docker
+    directory: /infrastructure/docker
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - dependencies
+      - docker
+
+  # GitHub Actions
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - dependencies
+      - ci
